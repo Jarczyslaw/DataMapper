@@ -13,15 +13,9 @@ namespace DataTableMapper
         public Type EntityType { get { return entityType.Value; } }
 
         public TEntity Map(DataRow row)
-        {
-            var entity = new TEntity();
+        { 
             var lookup = CreateMappingLookup(row.Table);
-            foreach (var mappingPair in lookup)
-            {
-                var fieldValue = row[mappingPair.ColumnName];
-                MapperHelper.SetValue(entity, mappingPair.Property, fieldValue);
-            }
-            return entity;
+            return MapEntity(row, lookup);
         }
 
         public IEnumerable<TEntity> Map(DataTable table)
@@ -30,15 +24,21 @@ namespace DataTableMapper
             var lookup = CreateMappingLookup(table);
             foreach (DataRow row in table.Rows)
             {
-                var entity = new TEntity();
-                foreach (var mappingPair in lookup)
-                {
-                    var fieldValue = row[mappingPair.ColumnName];
-                    MapperHelper.SetValue(entity, mappingPair.Property, fieldValue);
-                }
+                var entity = MapEntity(row, lookup);
                 entities.Add(entity);
             }
             return entities;
+        }
+
+        private TEntity MapEntity(DataRow row, List<MappingPair> lookup)
+        {
+            var entity = new TEntity();
+            foreach (var mappingPair in lookup)
+            {
+                var fieldValue = row[mappingPair.ColumnName];
+                MapperHelper.SetValue(entity, mappingPair.Property, fieldValue);
+            }
+            return entity;
         }
 
         private List<MappingPair> CreateMappingLookup(DataTable table)
