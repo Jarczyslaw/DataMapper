@@ -1,19 +1,18 @@
-﻿using DataTableMapper.Exceptions;
+﻿using DataMapper.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
 
-namespace DataTableMapper
+namespace DataMapper
 {
     public class Mapper<TEntity> where TEntity : class, new()
     {
-        private Lazy<Type> entityType = new Lazy<Type>(() => typeof(TEntity));
-        public Type EntityType { get { return entityType.Value; } }
+        private readonly Lazy<Type> entityType = new Lazy<Type>(() => typeof(TEntity));
+        public Type EntityType => entityType.Value;
 
         public TEntity Map(DataRow row)
-        { 
+        {
             var lookup = CreateMappingLookup(row.Table);
             return MapEntity(row, lookup);
         }
@@ -44,21 +43,21 @@ namespace DataTableMapper
         private List<MappingPair> CreateMappingLookup(DataTable table)
         {
             var lookup = new List<MappingPair>();
-            var propsToMap = MapperHelper.GetPropertiesToMap(EntityType);
-            foreach (var prop in propsToMap)
+            foreach (var prop in MapperHelper.GetPropertiesToMap(EntityType))
             {
                 var mapping = prop.GetCustomAttribute<MappingAttribute>();
                 if (FindMatchingMapping(mapping.Names, table.Columns, out string matchingMapping))
                 {
-                    var newPair = new MappingPair
+                    lookup.Add(new MappingPair
                     {
                         Property = prop,
                         ColumnName = matchingMapping
-                    };
-                    lookup.Add(newPair);
+                    });
                 }
                 else if (mapping.Required)
+                {
                     throw new MissingMappingNameException(string.Format("Matching mapping name for {0} not found", prop.Name));
+                }
             }
             return lookup;
         }

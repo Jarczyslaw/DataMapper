@@ -1,11 +1,6 @@
-﻿using DataTableMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace DataAccess
+namespace DataMapper.DataAccess
 {
     public class Model
     {
@@ -32,7 +27,7 @@ namespace DataAccess
 
         public override string ToString()
         {
-            return string.Format("Id: {0}, Active: {1}, Weight: {2}, Cost: {3}, Name: {4}, AddedDate: {5}, OrderId: {6}", 
+            return string.Format("Id: {0}, Active: {1}, Weight: {2}, Cost: {3}, Name: {4}, AddedDate: {5}, OrderId: {6}",
                 Id, Active, Weight, Cost, Name, AddedDate, OrderId.HasValue ? OrderId.Value.ToString() : "null");
         }
     }

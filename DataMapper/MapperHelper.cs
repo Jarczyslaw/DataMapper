@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
-namespace DataTableMapper
+namespace DataMapper
 {
-    public static class MapperHelper
+    internal static class MapperHelper
     {
         public static IEnumerable<PropertyInfo> GetPropertiesToMap(Type type)
         {

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace DataTableMapper.Exceptions
+namespace DataMapper.Exceptions
 {
     public class MissingMappingNameException : Exception
     {

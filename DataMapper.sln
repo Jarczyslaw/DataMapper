@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2047
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTableMapper", "DataTableMapper\DataTableMapper.csproj", "{F6AD74F9-CD8F-4D35-BF3E-DA2245DECD9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataMapper", "DataMapper\DataMapper.csproj", "{F6AD74F9-CD8F-4D35-BF3E-DA2245DECD9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTableMapper.Tests", "DataTableMapper.Tests\DataTableMapper.Tests.csproj", "{FEC7B689-E784-4202-A682-7D57E0A3409C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMapper.Tests", "DataMapper.Tests\DataMapper.Tests.csproj", "{FEC7B689-E784-4202-A682-7D57E0A3409C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{26C67E06-287A-4532-B8B4-71D4F2A7C538}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataMapper.DataAccess", "DataMapper.DataAccess\DataMapper.DataAccess.csproj", "{26C67E06-287A-4532-B8B4-71D4F2A7C538}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{C16FC28E-847C-4FFE-BD1A-D7787BE8F95E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMapper.TestApp", "DataMapper.TestApp\DataMapper.TestApp.csproj", "{C16FC28E-847C-4FFE-BD1A-D7787BE8F95E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

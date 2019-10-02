@@ -1,11 +1,9 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using DataAccess;
-using DataTableMapper.Exceptions;
+﻿using DataMapper.DataAccess;
+using DataMapper.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
-namespace DataTableMapper.Tests
+namespace DataMapper.Tests
 {
     [TestClass]
     public class MapperTests
