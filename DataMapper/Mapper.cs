@@ -1,4 +1,5 @@
-﻿using DataMapper.Exceptions;
+﻿using DataMapper.Attributes;
+using DataMapper.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -47,6 +48,10 @@ namespace DataMapper
             foreach (var mappingPair in lookup)
             {
                 var fieldValue = valueFunc(mappingPair.ColumnName);
+                if (mappingPair.Converter != null)
+                {
+                    fieldValue = mappingPair.Converter.Convert(fieldValue);
+                }
                 Helpers.SetValue(entity, mappingPair.Property, fieldValue);
             }
             return entity;
@@ -63,7 +68,8 @@ namespace DataMapper
                     lookup.Add(new MappingPair
                     {
                         Property = prop,
-                        ColumnName = matchingMapping
+                        ColumnName = matchingMapping,
+                        Converter = prop.GetCustomAttribute<ConverterAttribute>()
                     });
                 }
                 else if (mapping.Required)

@@ -1,6 +1,7 @@
 ﻿using DataMapper.DataAccess;
 using DataMapper.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Data;
 using System.Linq;
 
 namespace DataMapper.Tests
@@ -47,6 +48,20 @@ namespace DataMapper.Tests
             var data = DataSource.GetTable();
             data.Columns.RemoveAt(0);
             var entities = mapper.Map(data);
+        }
+
+        [TestMethod]
+        public void UseConverter()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("Value", typeof(int));
+            var row = dt.NewRow();
+            row["Value"] = 1;
+
+            var mapper = new Mapper<ConverterEntity>();
+            var entity = mapper.Map(row);
+            Assert.AreEqual(1, entity.Value);
+            Assert.AreEqual(true, entity.ConvertedValue);
         }
     }
 }

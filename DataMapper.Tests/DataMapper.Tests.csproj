@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConverterEntity.cs" />
+    <Compile Include="IntToBoolConverterAttribute.cs" />
     <Compile Include="InvalidModelMapping.cs" />
     <Compile Include="MapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

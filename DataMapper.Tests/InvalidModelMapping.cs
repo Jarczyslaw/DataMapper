@@ -1,4 +1,5 @@
-﻿using DataMapper.DataAccess;
+﻿using DataMapper.Attributes;
+using DataMapper.DataAccess;
 
 namespace DataMapper.Tests
 {

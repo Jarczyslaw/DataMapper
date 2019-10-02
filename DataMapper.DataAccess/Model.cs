@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataMapper.Attributes;
+using System;
 
 namespace DataMapper.DataAccess
 {

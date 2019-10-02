@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataMapper
+namespace DataMapper.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class MappingAttribute : Attribute
