@@ -13,40 +13,52 @@ namespace DataMapper
 
         public TEntity Map(DataRow row)
         {
-            var lookup = CreateMappingLookup(row.Table);
-            return MapEntity(row, lookup);
+            var lookup = CreateMappingLookup(Helpers.GetColumnNames(row.Table));
+            return MapEntity(columnName => row[columnName], lookup);
         }
 
         public IEnumerable<TEntity> Map(DataTable table)
         {
             var entities = new List<TEntity>();
-            var lookup = CreateMappingLookup(table);
+            var lookup = CreateMappingLookup(Helpers.GetColumnNames(table));
             foreach (DataRow row in table.Rows)
             {
-                var entity = MapEntity(row, lookup);
+                var entity = MapEntity(columnName => row[columnName], lookup);
                 entities.Add(entity);
             }
             return entities;
         }
 
-        private TEntity MapEntity(DataRow row, List<MappingPair> lookup)
+        public IEnumerable<TEntity> Map(IDataReader reader)
+        {
+            var entities = new List<TEntity>();
+            var lookup = CreateMappingLookup(Helpers.GetColumnNames(reader));
+            while (reader.Read())
+            {
+                var entity = MapEntity(columnName => reader[columnName], lookup);
+                entities.Add(entity);
+            }
+            return entities;
+        }
+
+        private TEntity MapEntity(Func<string, object> valueFunc, List<MappingPair> lookup)
         {
             var entity = new TEntity();
             foreach (var mappingPair in lookup)
             {
-                var fieldValue = row[mappingPair.ColumnName];
-                MapperHelper.SetValue(entity, mappingPair.Property, fieldValue);
+                var fieldValue = valueFunc(mappingPair.ColumnName);
+                Helpers.SetValue(entity, mappingPair.Property, fieldValue);
             }
             return entity;
         }
 
-        private List<MappingPair> CreateMappingLookup(DataTable table)
+        private List<MappingPair> CreateMappingLookup(List<string> columns)
         {
             var lookup = new List<MappingPair>();
-            foreach (var prop in MapperHelper.GetPropertiesToMap(EntityType))
+            foreach (var prop in Helpers.GetPropertiesToMap(EntityType))
             {
                 var mapping = prop.GetCustomAttribute<MappingAttribute>();
-                if (FindMatchingMapping(mapping.Names, table.Columns, out string matchingMapping))
+                if (FindMatchingMapping(mapping.Names, columns, out string matchingMapping))
                 {
                     lookup.Add(new MappingPair
                     {
@@ -62,10 +74,10 @@ namespace DataMapper
             return lookup;
         }
 
-        private bool FindMatchingMapping(List<string> mappings, DataColumnCollection columns, out string matchingMapping)
+        private bool FindMatchingMapping(List<string> mappingNames, List<string> columns, out string matchingMapping)
         {
             matchingMapping = string.Empty;
-            foreach (var mapping in mappings)
+            foreach (var mapping in mappingNames)
             {
                 if (columns.Contains(mapping))
                 {
