@@ -1,7 +1,7 @@
 ﻿using DataMapper.Attributes;
 using DataMapper.DataAccess;
 
-namespace DataMapper.Tests
+namespace DataMapper.Tests.Mapping
 {
     public class InvalidModelMapping : Model
     {

@@ -1,8 +1,8 @@
 ﻿using DataMapper.Attributes;
 
-namespace DataMapper.Tests
+namespace DataMapper.Tests.Mapping
 {
-    public class IntToBoolConverterAttribute : ConverterAttribute
+    public class IntToBoolConverterAttribute : MappingConverterAttribute
     {
         public override object Convert(object value)
         {

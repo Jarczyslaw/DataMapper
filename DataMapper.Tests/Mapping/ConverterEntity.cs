@@ -1,6 +1,6 @@
 ﻿using DataMapper.Attributes;
 
-namespace DataMapper.Tests
+namespace DataMapper.Tests.Mapping
 {
     public class ConverterEntity
     {

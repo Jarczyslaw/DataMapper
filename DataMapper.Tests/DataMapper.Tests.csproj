@@ -50,11 +50,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConverterEntity.cs" />
-    <Compile Include="IntToBoolConverterAttribute.cs" />
-    <Compile Include="InvalidModelMapping.cs" />
-    <Compile Include="MapperTests.cs" />
+    <Compile Include="Export\BoolToIntConverter.cs" />
+    <Compile Include="Export\ConverterEntity.cs" />
+    <Compile Include="Export\Entity.cs" />
+    <Compile Include="Mapping\ConverterEntity.cs" />
+    <Compile Include="Mapping\IntToBoolConverterAttribute.cs" />
+    <Compile Include="Mapping\InvalidModelMapping.cs" />
+    <Compile Include="Mapping\MappingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Export\ExportTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

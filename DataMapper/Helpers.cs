@@ -7,28 +7,52 @@ using System.Reflection;
 
 namespace DataMapper
 {
-    internal static class Helpers
+    public static class Helpers
     {
-        public static IEnumerable<PropertyInfo> GetPropertiesToMap(Type type)
+        public static IEnumerable<PropertyInfo> GetProperties<TAttribute>(Type type)
         {
             return type.GetProperties()
-                .Where(p => p.IsDefined(typeof(MappingAttribute), false));
+                .Where(p => p.IsDefined(typeof(TAttribute), false));
         }
 
         public static void SetValue(object entity, PropertyInfo property, object value)
         {
             if (value == DBNull.Value)
+            {
                 value = null;
+            }
             property.SetValue(entity, value);
         }
 
         public static bool IsNullable(Type type)
         {
             if (!type.IsValueType)
+            {
                 return true;
+            }
+
             if (Nullable.GetUnderlyingType(type) != null)
+            {
                 return true;
+            }
+
             return false;
+        }
+
+        public static Type ExtractTypeFromNullable(Type type)
+        {
+            if (!type.IsValueType)
+            {
+                return type;
+            }
+
+            var underlyingType = Nullable.GetUnderlyingType(type);
+            if (underlyingType != null)
+            {
+                return underlyingType;
+            }
+
+            return type;
         }
 
         public static List<string> GetColumnNames(DataTable dataTable)

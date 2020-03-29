@@ -42,7 +42,23 @@ namespace DataMapper
             return entities;
         }
 
-        private TEntity MapEntity(Func<string, object> valueFunc, List<MappingPair> lookup)
+        public DataTable ExportToDataTable(IEnumerable<TEntity> entities)
+        {
+            var result = new DataTable();
+            var lookup = CreateExportLookup();
+            foreach (var look in lookup)
+            {
+                result.Columns.Add(look.ColumnName, look.ColumnType);
+            }
+            foreach (var entity in entities)
+            {
+                var newRow = ExportEntity(result, entity, lookup);
+                result.Rows.Add(newRow);
+            }
+            return result;
+        }
+
+        private TEntity MapEntity(Func<string, object> valueFunc, List<MappingLookup> lookup)
         {
             var entity = new TEntity();
             foreach (var mappingPair in lookup)
@@ -57,25 +73,57 @@ namespace DataMapper
             return entity;
         }
 
-        private List<MappingPair> CreateMappingLookup(List<string> columns)
+        private DataRow ExportEntity(DataTable dataTable, TEntity entity, List<ExportLookup> lookup)
         {
-            var lookup = new List<MappingPair>();
-            foreach (var prop in Helpers.GetPropertiesToMap(EntityType))
+            var row = dataTable.NewRow();
+            foreach (var look in lookup)
+            {
+                var fieldValue = look.Property.GetValue(entity);
+                if (look.Converter != null)
+                {
+                    fieldValue = look.Converter.Convert(fieldValue);
+                }
+                row[look.ColumnName] = fieldValue ?? DBNull.Value;
+            }
+            return row;
+        }
+
+        private List<MappingLookup> CreateMappingLookup(List<string> columns)
+        {
+            var lookup = new List<MappingLookup>();
+            foreach (var prop in Helpers.GetProperties<MappingAttribute>(EntityType))
             {
                 var mapping = prop.GetCustomAttribute<MappingAttribute>();
                 if (FindMatchingMapping(mapping.Names, columns, out string matchingMapping))
                 {
-                    lookup.Add(new MappingPair
+                    lookup.Add(new MappingLookup
                     {
                         Property = prop,
                         ColumnName = matchingMapping,
-                        Converter = prop.GetCustomAttribute<ConverterAttribute>()
+                        Converter = prop.GetCustomAttribute<MappingConverterAttribute>()
                     });
                 }
                 else if (mapping.Required)
                 {
                     throw new MissingMappingNameException(string.Format("Matching mapping name for {0} not found", prop.Name));
                 }
+            }
+            return lookup;
+        }
+
+        private List<ExportLookup> CreateExportLookup()
+        {
+            var lookup = new List<ExportLookup>();
+            foreach (var prop in Helpers.GetProperties<ExportAttribute>(EntityType))
+            {
+                var propAttr = prop.GetCustomAttribute<ExportAttribute>();
+                lookup.Add(new ExportLookup
+                {
+                    ColumnName = propAttr.ColumnName,
+                    ColumnType = propAttr.ColumnType ?? Helpers.ExtractTypeFromNullable(prop.PropertyType),
+                    Property = prop,
+                    Converter = prop.GetCustomAttribute<ExportConverterAttribute>()
+                });
             }
             return lookup;
         }

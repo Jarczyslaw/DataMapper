@@ -25,10 +25,14 @@ namespace DataMapper.Attributes
         private void Validate(string[] names)
         {
             if (names == null || names.Length == 0)
+            {
                 throw new InvalidMappingException("Mapping names array can not be empty");
+            }
 
             if (names.Any(m => string.IsNullOrEmpty(m)))
+            {
                 throw new InvalidMappingException("Mapping name can not be empty");
+            }
         }
     }
 }

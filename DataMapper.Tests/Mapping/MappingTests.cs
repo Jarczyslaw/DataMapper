@@ -4,12 +4,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data;
 using System.Linq;
 
-namespace DataMapper.Tests
+namespace DataMapper.Tests.Mapping
 {
     [TestClass]
-    public class MapperTests
+    public class MappingTests
     {
-        private Mapper<Model> mapper = new Mapper<Model>();
+        private readonly Mapper<Model> mapper = new Mapper<Model>();
 
         [TestMethod]
         public void DataRowMapping()
@@ -38,7 +38,7 @@ namespace DataMapper.Tests
         public void InvalidMapping()
         {
             var table = DataSource.GetTable();
-            var collection = new Mapper<InvalidModelMapping>().Map(table);
+            new Mapper<InvalidModelMapping>().Map(table);
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace DataMapper.Tests
         {
             var data = DataSource.GetTable();
             data.Columns.RemoveAt(0);
-            var entities = mapper.Map(data);
+            mapper.Map(data);
         }
 
         [TestMethod]
